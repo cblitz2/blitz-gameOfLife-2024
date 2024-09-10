@@ -1,4 +1,4 @@
-package blitz.gameOfLife2024;
+package blitz.gameoflife;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 public class GameTest {
 
     @Test
-    public void blinker() {
+    public void nextGen() {
         // given
         Grid grid = new Grid(3, 3);
         int[][] initialGrid = {
