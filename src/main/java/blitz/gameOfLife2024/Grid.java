@@ -1,3 +1,5 @@
+package blitz.gameOfLife2024;
+
 public class Grid {
     private int width;
     private int height;
@@ -16,7 +18,7 @@ public class Grid {
 
         int[][] next = new int[height][width];
 
-        for (int h =0; h < height; h++) {
+        for (int h = 0; h < height; h++) {
             for (int w = 0; w < width; w++) {
 
                 int neighbors = 0;
@@ -28,7 +30,9 @@ public class Grid {
                         int neighborH = h + i;
                         int neighborW = w + j;
 
-                        if ((i != 0 || j != 0) && neighborH >= 0 && neighborH < height && neighborW >= 0 && neighborW < width) {
+                        if ((i != 0 || j != 0) && neighborH >= 0
+                                && neighborH < height && neighborW >= 0
+                                && neighborW < width) {
                             neighbors += grid[neighborH][neighborW];
                         }
                     }
@@ -37,14 +41,12 @@ public class Grid {
                 // rules of the game
                 if (grid[h][w] == 1) {
                     if (neighbors < 2 || neighbors > 3) {
-                        next[h][w] = 0;
-                    } else {
-                        next[h][w] = 1;
-                    }
+                        next[h][w] = 0;}
+                    else {
+                        next[h][w] = 1;}
                 } else {
                     if (neighbors == 3) {
-                        next[h][w] = 1;
-                    }
+                        next[h][w] = 1;}
                     else {
                         next[h][w] = 0;
                     }
