@@ -14,14 +14,16 @@ public class GameTest {
                 {0, 1, 0},
                 {0, 1, 0}};
 
+        grid.setField(initialGrid);
+
         int[][] expectedNextGen = {
                 {0, 0, 0},
                 {1, 1, 1},
                 {0, 0, 0}};
         // when
-        int[][] nextGen = grid.nextGen(initialGrid);
+        grid.nextGen();
 
         // then
-        assertArrayEquals(expectedNextGen, nextGen);
+        assertArrayEquals(expectedNextGen, grid.getField());
     }
 }
