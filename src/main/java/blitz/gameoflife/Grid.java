@@ -65,6 +65,7 @@ public class Grid {
             for (int x = 0; x < field[y].length; x++) {
                 builder.append(field[y][x]);
             }
+            builder.append("\n");
         }
         return builder.toString();
     }
