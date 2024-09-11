@@ -63,12 +63,7 @@ public class Grid {
         StringBuilder builder = new StringBuilder();
         for (int y = 0; y < field.length; y++) {
             for (int x = 0; x < field[y].length; x++) {
-                if (field[y][x] == 1) {
-                    builder.append("1");
-                } else {
-                    builder.append("0");
-                }
-                builder.append("\n");
+                builder.append(field[y][x]);
             }
         }
         return builder.toString();
