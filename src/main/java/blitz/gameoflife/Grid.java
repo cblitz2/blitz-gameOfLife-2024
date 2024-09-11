@@ -38,17 +38,13 @@ public class Grid {
                 }
 
                 // rules of the game
-                if (field[h][w] == 1) {
-                    if (neighbors == 2 || neighbors == 3) {
-                        next[h][w] = 1;
-                    }
-                } else {
-                    if (neighbors == 3) {
+                if (field[h][w] == 1 && (neighbors == 2 || neighbors == 3)) {
+                    next[h][w] = 1;
+                } else if (neighbors == 3) {
                         next[h][w] = 1;
                     }
                 }
             }
-        }
         field = next;
     }
 
@@ -68,9 +64,9 @@ public class Grid {
         for (int y = 0; y < field.length; y++) {
             for (int x = 0; x < field[y].length; x++) {
                 if (field[y][x] == 1) {
-                    builder.append("O");
-                } else {
                     builder.append("1");
+                } else {
+                    builder.append("0");
                 }
                 builder.append("\n");
             }
