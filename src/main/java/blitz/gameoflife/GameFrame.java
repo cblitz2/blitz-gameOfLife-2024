@@ -9,7 +9,9 @@ public class GameFrame extends JFrame {
 
     private Grid grid;
     private int cellSize = 20;
-    private JButton playButton, pauseButton, clearButton;
+    private JButton playButton;
+    private JButton pauseButton;
+    private JButton clearButton;
 
     public GameFrame() {
         grid = new Grid(40, 40);
@@ -32,8 +34,8 @@ public class GameFrame extends JFrame {
                 int x = e.getX() / cellSize;
                 int y = e.getY() / cellSize;
 
-                if (x >= 0 && x < grid.getField()[0].length &&
-                        y >= 0 && y < grid.getField().length) {
+                if (x >= 0 && x < grid.getField()[0].length
+                        && y >= 0 && y < grid.getField().length) {
                     if (grid.getField()[y][x] == 1) {
                         grid.getField()[y][x] = 0;
                     } else {
@@ -56,10 +58,15 @@ public class GameFrame extends JFrame {
             public void mouseExited(MouseEvent e) {}
         });
 
-        JPanel panel = new JPanel();
         playButton = new JButton("Play");
         pauseButton = new JButton("Pause");
         clearButton = new JButton("Clear");
+
+        JPanel panel = new JPanel();
+        panel.add(playButton);
+        panel.add(pauseButton);
+        panel.add(clearButton);
+        add(panel, BorderLayout.SOUTH);
 
         playButton.addActionListener(e -> {
             timer.start();
@@ -80,10 +87,6 @@ public class GameFrame extends JFrame {
             repaint();
         });
 
-        panel.add(playButton);
-        panel.add(pauseButton);
-        panel.add(clearButton);
-        add(panel, BorderLayout.SOUTH);
     }
 
     private void clearGrid(int[][] grid) {
