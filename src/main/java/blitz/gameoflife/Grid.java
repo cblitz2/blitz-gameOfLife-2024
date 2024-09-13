@@ -1,5 +1,7 @@
 package blitz.gameoflife;
 
+import java.util.Arrays;
+
 public class Grid {
     private int width;
     private int height;
@@ -68,5 +70,11 @@ public class Grid {
             builder.append("\n");
         }
         return builder.toString();
+    }
+
+    public void clearGrid(int[][] grid) {
+        for (int y = 0; y < grid.length; y++) {
+            Arrays.fill(grid[y], 0);
+        }
     }
 }

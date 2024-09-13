@@ -34,12 +34,13 @@ public class GameFrame extends JFrame {
                 int x = e.getX() / cellSize;
                 int y = e.getY() / cellSize;
 
-                if (x >= 0 && x < grid.getField()[0].length
-                        && y >= 0 && y < grid.getField().length) {
-                    if (grid.getField()[y][x] == 1) {
-                        grid.getField()[y][x] = 0;
+                int[][] field = grid.getField();
+
+                if (x >= 0 && x < field[0].length && y >= 0 && y < field.length) {
+                    if (field[y][x] == 1) {
+                        field[y][x] = 0;
                     } else {
-                        grid.getField()[y][x] = 1;
+                        field[y][x] = 1;
                     }
                     repaint();
                 }
@@ -80,18 +81,11 @@ public class GameFrame extends JFrame {
             pauseButton.setEnabled(false);
         });
 
-
         clearButton.addActionListener(e -> {
             timer.stop();
-            clearGrid(grid.getField());
+            grid.clearGrid(grid.getField());
             repaint();
         });
 
-    }
-
-    private void clearGrid(int[][] grid) {
-        for (int y = 0; y < grid.length; y++) {
-            Arrays.fill(grid[y], 0);
-        }
     }
 }
