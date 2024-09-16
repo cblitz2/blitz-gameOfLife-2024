@@ -21,17 +21,24 @@ public class GameComponent extends JComponent {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         int[][] field = grid.getField();
+        int numRows = field.length;
+        int numCols = field[0].length;
 
-        for (int y = 0; y < field.length; y++) {
+        for (int y = 0; y < numRows; y++) {
             for (int x = 0; x < field[y].length; x++) {
                 if (field[y][x] == 1) {
                     g.setColor(Color.BLACK);
                     g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
                 }
-
-                g.setColor(Color.GRAY);
-                g.drawRect(x * cellSize, y * cellSize, cellSize, cellSize);
             }
+        }
+
+        g.setColor(Color.GRAY);
+        for (int y = 0; y <= numRows; y++) {
+            g.drawLine(0, y * cellSize, numCols * cellSize, y * cellSize);
+        }
+        for (int x = 0; x <= numCols; x++) {
+            g.drawLine(x * cellSize, 0, x * cellSize, numRows * cellSize);
         }
     }
 }

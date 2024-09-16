@@ -3,7 +3,6 @@ package blitz.gameoflife;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 
 public class GameFrame extends JFrame {
 
@@ -14,7 +13,7 @@ public class GameFrame extends JFrame {
     private JButton clearButton;
 
     public GameFrame() {
-        grid = new Grid(40, 40);
+        grid = new Grid(70, 40);
 
         setSize(800, 600);
         setTitle("Conway's Game of Life");
