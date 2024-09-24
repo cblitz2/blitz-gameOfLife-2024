@@ -52,8 +52,7 @@ public class RleParser {
             char c = content.charAt(i);
 
             if (Character.isDigit(c)) {
-                count = count * 10 + Character.getNumericValue(c);
-            }
+                count = count * 10 + Character.getNumericValue(c);}
             else if (c == 'b') {
                 if (count == 0) {
                     count = 1;
@@ -69,8 +68,7 @@ public class RleParser {
                         currentCol = 0;
                     }
                 }
-                count = 0;
-            }
+                count = 0; }
             else if (c == 'o') {
                 if (count == 0) {
                     count = 1;
@@ -86,15 +84,13 @@ public class RleParser {
                         currentCol = 0;
                     }
                 }
-                count = 0;
-            }
+                count = 0; }
             else if (c == '$') {
                 currentRow++;
                 currentCol = 0;
                 if (currentRow >= rows) {
                     break;
-                }
-            }
+                }}
             else if (c == '!') {
                 break;
             }

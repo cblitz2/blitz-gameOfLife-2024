@@ -33,9 +33,9 @@ public class GameTest {
         String rleData = "b2o$bobo$2o!";
         RleParser parser = new RleParser();
         int[][] expectedGrid = {
-                {0, 1, 1, 0},
-                {1, 0, 0, 1},
-                {0, 1, 1, 0},
+            {0, 1, 1, 0},
+            {1, 0, 0, 1},
+            {0, 1, 1, 0},
         };
         parser.parseHeader("x = 4, y = 3");
 
