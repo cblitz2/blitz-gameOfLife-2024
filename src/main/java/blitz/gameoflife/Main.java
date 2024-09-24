@@ -9,8 +9,8 @@ public class Main {
 
             Grid grid = new Grid(gridData);
             GameFrame gameFrame = new GameFrame(grid);
-            gameFrame.setVisible(true); }
-        catch (Exception e) {
+            gameFrame.setVisible(true);
+        } catch (Exception e) {
             System.err.println("Error loading RLE file: " + e.getMessage());
         }
     }
