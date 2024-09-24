@@ -6,14 +6,14 @@ import java.awt.event.*;
 
 public class GameFrame extends JFrame {
 
-    private Grid grid;
+    public Grid grid;
     private int cellSize = 20;
     private JButton playButton;
     private JButton pauseButton;
     private JButton clearButton;
 
-    public GameFrame() {
-        grid = new Grid(70, 40);
+    public GameFrame(Grid grid) {
+        this.grid = grid;
 
         setSize(800, 600);
         setTitle("Conway's Game of Life");
@@ -26,6 +26,7 @@ public class GameFrame extends JFrame {
 
         GameComponent gameComponent = new GameComponent(grid, cellSize);
         add(gameComponent);
+
 
         gameComponent.addMouseListener(new MouseListener() {
             @Override

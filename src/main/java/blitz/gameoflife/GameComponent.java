@@ -17,10 +17,15 @@ public class GameComponent extends JComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        int[][] field = grid.getField();
+
+        if (field == null || field.length == 0 || field[0].length == 0) {
+            return;
+        }
+
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        int[][] field = grid.getField();
         int numRows = field.length;
         int numCols = field[0].length;
 
@@ -35,10 +40,10 @@ public class GameComponent extends JComponent {
 
         g.setColor(Color.GRAY);
         for (int y = 0; y <= numRows; y++) {
-            g.drawLine(0, y * cellSize, numCols * cellSize, y * cellSize);
+            g.drawLine(0, y * cellSize, field[0].length * cellSize, y * cellSize);
         }
         for (int x = 0; x <= numCols; x++) {
-            g.drawLine(x * cellSize, 0, x * cellSize, numRows * cellSize);
+            g.drawLine(x * cellSize, 0, x * cellSize, field.length * cellSize);
         }
     }
 }
