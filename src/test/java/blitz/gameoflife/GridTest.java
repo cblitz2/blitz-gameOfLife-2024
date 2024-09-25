@@ -3,7 +3,7 @@ package blitz.gameoflife;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-public class GameTest {
+public class GridTest {
 
     @Test
     public void nextGen() {
