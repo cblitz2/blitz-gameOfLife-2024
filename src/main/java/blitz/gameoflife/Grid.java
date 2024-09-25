@@ -3,14 +3,13 @@ package blitz.gameoflife;
 import java.util.Arrays;
 
 public class Grid {
+
     private int width;
     private int height;
     private int[][] field;
 
-    public Grid(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.field = new int[height][width];
+    public Grid(int[][] initialField) {
+        setField(initialField);
     }
 
     public void nextGen() {
@@ -43,10 +42,11 @@ public class Grid {
                 if (field[h][w] == 1 && (neighbors == 2 || neighbors == 3)) {
                     next[h][w] = 1;
                 } else if (neighbors == 3) {
-                        next[h][w] = 1;
-                    }
+                    next[h][w] = 1;
                 }
             }
+        }
+
         field = next;
     }
 
