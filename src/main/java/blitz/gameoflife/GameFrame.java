@@ -1,3 +1,4 @@
+
 package blitz.gameoflife;
 
 import javax.swing.*;
@@ -6,14 +7,12 @@ import java.awt.event.*;
 
 public class GameFrame extends JFrame {
 
-    public Grid grid;
     private int cellSize = 20;
     private JButton playButton;
     private JButton pauseButton;
     private JButton clearButton;
 
     public GameFrame(Grid grid) {
-        this.grid = grid;
 
         setSize(800, 600);
         setTitle("Conway's Game of Life");

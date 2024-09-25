@@ -52,48 +52,43 @@ public class RleParser {
             char c = content.charAt(i);
 
             if (Character.isDigit(c)) {
-                count = count * 10 + Character.getNumericValue(c); }
-            else if (c == 'b') {
+                count = count * 10 + Character.getNumericValue(c);
+            } else if (c == 'b') {
                 if (count == 0) {
                     count = 1;
                 }
                 for (int j = 0; j < count; j++) {
-                    if (currentRow >= rows) {
-                        break;
-                    }
-                    grid[currentRow][currentCol] = 0;
-                    currentCol++;
-                    if (currentCol >= cols) {
-                        currentRow++;
-                        currentCol = 0;
+                    if (currentRow < rows && currentCol < cols) {
+                        grid[currentRow][currentCol] = 0;
+                        currentCol++;
+                        if (currentCol >= cols) {
+                            currentRow++;
+                            currentCol = 0;
+                        }
                     }
                 }
                 count = 0;
-            }
-            else if (c == 'o') {
+            } else if (c == 'o') {
                 if (count == 0) {
                     count = 1;
                 }
                 for (int j = 0; j < count; j++) {
-                    if (currentRow >= rows) {
-                        break;
-                    }
-                    grid[currentRow][currentCol] = 1;
-                    currentCol++;
-                    if (currentCol >= cols) {
-                        currentRow++;
-                        currentCol = 0;
+                    if (currentRow < rows && currentCol < cols) {
+                        grid[currentRow][currentCol] = 1;
+                        currentCol++;
+                        if (currentCol >= cols) {
+                            currentRow++;
+                            currentCol = 0;
+                        }
                     }
                 }
                 count = 0;
-            }
-            else if (c == '$') {
-                currentRow++;
-                currentCol = 0;
-                if (currentRow >= rows) {
-                    break; }
-            }
-            else if (c == '!') {
+            } else if (c == '$') {
+                if (currentCol != 0) {
+                    currentRow++;
+                    currentCol = 0;
+                }
+            } else if (c == '!') {
                 break;
             }
         }

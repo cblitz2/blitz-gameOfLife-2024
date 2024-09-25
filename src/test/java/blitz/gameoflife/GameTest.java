@@ -1,7 +1,6 @@
 package blitz.gameoflife;
 
 import org.junit.jupiter.api.Test;
-import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class GameTest {
@@ -20,6 +19,7 @@ public class GameTest {
                 {0, 0, 0},
                 {1, 1, 1},
                 {0, 0, 0}};
+
         // when
         grid.nextGen();
 
@@ -30,22 +30,17 @@ public class GameTest {
     @Test
     public void decodeData() {
         // given
-        String rleData = "b2o$bobo$2o!";
+        String rleData = "bob$2ob$b2o!";
         RleParser parser = new RleParser();
         int[][] expectedGrid = {
-            {0, 1, 1, 0},
-            {1, 0, 0, 1},
-            {0, 1, 1, 0},
+            {0, 1, 0},
+            {1, 1, 0},
+            {0, 1, 1},
         };
-        parser.parseHeader("x = 4, y = 3");
+        parser.parseHeader("x = 3, y = 3");
 
         // when
         int[][] actualGrid = parser.decodeData(rleData);
-
-        System.out.println("Actual Grid:");
-        for (int[] row : actualGrid) {
-            System.out.println(Arrays.toString(row));
-        }
 
         // then
         assertArrayEquals(expectedGrid, actualGrid);

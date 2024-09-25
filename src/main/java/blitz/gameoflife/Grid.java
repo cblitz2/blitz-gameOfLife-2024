@@ -8,7 +8,6 @@ public class Grid {
     private int height;
     private int[][] field;
 
-
     public Grid(int[][] initialField) {
         setField(initialField);
     }
@@ -43,10 +42,10 @@ public class Grid {
                 if (field[h][w] == 1 && (neighbors == 2 || neighbors == 3)) {
                     next[h][w] = 1;
                 } else if (neighbors == 3) {
-                        next[h][w] = 1;
-                    }
+                    next[h][w] = 1;
                 }
             }
+        }
 
         field = next;
     }
