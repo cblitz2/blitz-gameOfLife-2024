@@ -7,6 +7,8 @@ public class Grid {
     private int width;
     private int height;
     private int[][] field;
+    private static final int MIN_SIZE = 100;
+
 
     public Grid(int[][] initialField) {
         setField(initialField);
@@ -46,15 +48,30 @@ public class Grid {
                 }
             }
         }
-
         field = next;
     }
 
-
     public void setField(int[][] newField) {
-        this.field = newField;
-        this.height = newField.length;
-        this.width = newField[0].length;
+        int patternHeight = newField.length;
+        int patternWidth = newField[0].length;
+
+        int gridHeight = Math.max(MIN_SIZE, patternHeight);
+        int gridWidth = Math.max(MIN_SIZE, patternWidth);
+
+        int[][] newGrid = new int[gridHeight][gridWidth];
+
+        int startRow = (gridHeight - patternHeight) / 2;
+        int startCol = (gridWidth - patternWidth) / 2;
+
+        for (int y = 0; y < patternHeight; y++) {
+            for (int x = 0; x < patternWidth; x++) {
+                newGrid[startRow + y][startCol + x] = newField[y][x];
+            }
+        }
+
+        this.field = newGrid;
+        this.height = newGrid.length;
+        this.width = newGrid[0].length;
     }
 
     public int[][] getField() {

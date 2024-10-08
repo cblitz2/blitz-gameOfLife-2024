@@ -6,11 +6,9 @@ import java.awt.*;
 public class GameComponent extends JComponent {
 
     private Grid grid;
-    private int cellSize;
 
-    public GameComponent(Grid grid, int cellSize) {
+    public GameComponent(Grid grid) {
         this.grid = grid;
-        this.cellSize = cellSize;
     }
 
     @Override
@@ -23,27 +21,33 @@ public class GameComponent extends JComponent {
             return;
         }
 
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
-
         int numRows = field.length;
         int numCols = field[0].length;
 
+        int cellWidth = getWidth() / numCols;
+        int cellHeight = getHeight() / numRows;
+
+        int cellSize = Math.min(cellWidth, cellHeight);
+
+        int xoffset = (getWidth() - (numCols * cellSize)) / 2;
+        int yoffset = (getHeight() - (numRows * cellSize)) / 2;
+
         for (int y = 0; y < numRows; y++) {
-            for (int x = 0; x < field[y].length; x++) {
+            for (int x = 0; x < numCols; x++) {
                 if (field[y][x] == 1) {
                     g.setColor(Color.BLACK);
-                    g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    g.fillRect(xoffset + x * cellSize, yoffset + y * cellSize, cellSize, cellSize);
                 }
             }
         }
 
         g.setColor(Color.GRAY);
         for (int y = 0; y <= numRows; y++) {
-            g.drawLine(0, y * cellSize, field[0].length * cellSize, y * cellSize);
+            g.drawLine(xoffset, yoffset + y * cellSize, xoffset + numCols * cellSize, yoffset + y * cellSize);
         }
         for (int x = 0; x <= numCols; x++) {
-            g.drawLine(x * cellSize, 0, x * cellSize, field.length * cellSize);
+            g.drawLine(xoffset + x * cellSize, yoffset, xoffset + x * cellSize, yoffset + numRows * cellSize);
         }
     }
+
 }

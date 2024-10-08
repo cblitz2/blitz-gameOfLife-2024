@@ -1,30 +1,20 @@
 package blitz.gameoflife;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import org.apache.commons.io.IOUtils;
 
 public class RleParser {
+
     private int rows;
     private int cols;
-
-    private String readFile(String filePath) throws IOException {
-        StringBuilder content = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.startsWith("#") || line.isEmpty()) {
-                    continue;
-                }
-                if (line.startsWith("x")) {
-                    parseHeader(line);
-                } else {
-                    content.append(line);
-                }
-            }
-        }
-        return content.toString();
-    }
 
     public void parseHeader(String header) {
         String[] parts = header.split(",");
@@ -95,8 +85,40 @@ public class RleParser {
         return grid;
     }
 
-    public int[][] loadGridFromRleFile(String filePath) throws IOException {
-        String content = readFile(filePath);
+    public int[][] getGridFromClipboard() throws IOException, UnsupportedFlavorException {
+        String content = getFromClipboard();
+        String[] lines = content.split("\n");
+
+        for (String line : lines) {
+            line = line.trim();
+            if (line.startsWith("#") || line.isEmpty()) {
+                continue;
+            }
+            if (line.startsWith("x")) {
+                parseHeader(line);
+                break;
+            }
+        }
         return decodeData(content);
+    }
+
+    public String getFromClipboard() throws IOException, UnsupportedFlavorException {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        String clipContent = (String) clipboard.getData(DataFlavor.stringFlavor);
+        String content;
+
+        if (clipContent.startsWith("http")) {
+            URL url = new URL(clipContent);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setInstanceFollowRedirects(true);
+            content = IOUtils.toString(connection.getInputStream(), "UTF-8");
+        } else if (clipContent.contains("x") && clipContent.contains("y")) {
+            content = clipContent;
+        } else if (Files.exists(Paths.get(clipContent))) {
+            content = IOUtils.toString(new FileInputStream(new File(clipContent)), "UTF-8");
+        } else {
+            throw new IOException("Clipboard content is not valid RLE data, URL, or file path.");
+        }
+        return content;
     }
 }
