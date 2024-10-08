@@ -29,24 +29,24 @@ public class GameComponent extends JComponent {
 
         int cellSize = Math.min(cellWidth, cellHeight);
 
-        int xOffset = (getWidth() - (numCols * cellSize)) / 2;
-        int yOffset = (getHeight() - (numRows * cellSize)) / 2;
+        int xoffset = (getWidth() - (numCols * cellSize)) / 2;
+        int yoffset = (getHeight() - (numRows * cellSize)) / 2;
 
         for (int y = 0; y < numRows; y++) {
             for (int x = 0; x < numCols; x++) {
                 if (field[y][x] == 1) {
                     g.setColor(Color.BLACK);
-                    g.fillRect(xOffset + x * cellSize, yOffset + y * cellSize, cellSize, cellSize);
+                    g.fillRect(xoffset + x * cellSize, yoffset + y * cellSize, cellSize, cellSize);
                 }
             }
         }
 
         g.setColor(Color.GRAY);
         for (int y = 0; y <= numRows; y++) {
-            g.drawLine(xOffset, yOffset + y * cellSize, xOffset + numCols * cellSize, yOffset + y * cellSize);
+            g.drawLine(xoffset, yoffset + y * cellSize, xoffset + numCols * cellSize, yoffset + y * cellSize);
         }
         for (int x = 0; x <= numCols; x++) {
-            g.drawLine(xOffset + x * cellSize, yOffset, xOffset + x * cellSize, yOffset + numRows * cellSize);
+            g.drawLine(xoffset + x * cellSize, yoffset, xoffset + x * cellSize, yoffset + numRows * cellSize);
         }
     }
 

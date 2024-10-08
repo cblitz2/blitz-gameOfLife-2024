@@ -111,6 +111,7 @@ public class GameFrame extends JFrame {
             }
         });
     }
+
     private int[][] createEmptyGrid(int rows, int cols) {
         return new int[rows][cols];
     }
