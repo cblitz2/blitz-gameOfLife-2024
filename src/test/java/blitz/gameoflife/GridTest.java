@@ -24,7 +24,19 @@ public class GridTest {
         grid.nextGen();
 
         // then
-        assertArrayEquals(expectedNextGen, grid.getField());
+        int[][] actualRelevantPortion = extractRelevantPortion(grid.getField(), 3, 3);
+        assertArrayEquals(expectedNextGen, actualRelevantPortion);
+    }
+
+    private int[][] extractRelevantPortion(int[][] fullGrid, int rows, int cols) {
+        int startRow = (fullGrid.length - rows) / 2;
+        int startCol = (fullGrid[0].length - cols) / 2;
+
+        int[][] portion = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            System.arraycopy(fullGrid[startRow + i], startCol, portion[i], 0, cols);
+        }
+        return portion;
     }
 
     @Test
@@ -44,5 +56,27 @@ public class GridTest {
 
         // then
         assertArrayEquals(expectedGrid, actualGrid);
+    }
+
+    @Test
+    public void centeredGrid() {
+        // given
+        String rleData = "bob$2ob$b2o!";
+        RleParser parser = new RleParser();
+        parser.parseHeader("x = 3, y = 3");
+
+        int[][] expectedGrid = {
+                {0, 1, 0},
+                {1, 1, 0},
+                {0, 1, 1},
+        };
+
+        // when
+        int[][] actualGrid = parser.decodeData(rleData);
+        Grid grid = new Grid(actualGrid);
+        int[][] actualRelevantPortion = extractRelevantPortion(grid.getField(), 3, 3);
+
+        // then
+        assertArrayEquals(expectedGrid, actualRelevantPortion);
     }
 }
