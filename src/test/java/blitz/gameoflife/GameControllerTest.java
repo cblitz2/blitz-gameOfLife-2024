@@ -17,6 +17,7 @@ class GameControllerTest {
                     o5bo11bo5bo11bo5bo$bob3obo11bob3obo11bob3obo$bo5bo11bo5bo11bo5bo$4bo
                     17bo17bo$4bo17bo17bo$4bo17bo17bo4$o7bo9bo7bo9bo7bo$o7bo9bo7bo9bo7bo!
                     """.trim();
+
     @Test
     void toggleCellOn() {
         // given
@@ -41,11 +42,12 @@ class GameControllerTest {
         // given
         Grid model = mock();
         GameComponent view = mock();
-        GameController controller = new GameController(model, view);
         doReturn(10).when(view).getCellSize();
         doReturn(100).when(model).getWidth();
         doReturn(100).when(model).getHeight();
         doReturn(1).when(model).getCell(5, 10);
+
+        GameController controller = new GameController(model, view);
 
         // when
         controller.toggleCell(50, 100);

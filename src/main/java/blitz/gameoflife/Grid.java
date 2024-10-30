@@ -7,7 +7,7 @@ public class Grid {
     private int width;
     private int height;
     private int[][] field;
-    private final int MIN_SIZE = 100;
+    private final int minSize = 100;
 
 
     public Grid(int[][] initialField) {
@@ -71,8 +71,8 @@ public class Grid {
         int patternHeight = newField.length;
         int patternWidth = newField[0].length;
 
-        int gridHeight = Math.max(MIN_SIZE, patternHeight);
-        int gridWidth = Math.max(MIN_SIZE, patternWidth);
+        int gridHeight = Math.max(minSize, patternHeight);
+        int gridWidth = Math.max(minSize, patternWidth);
 
         int[][] newGrid = new int[gridHeight][gridWidth];
 
