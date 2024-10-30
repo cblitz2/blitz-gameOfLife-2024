@@ -1,14 +1,10 @@
 package blitz.gameoflife;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.datatransfer.*;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.net.*;
+import java.nio.file.*;
 import org.apache.commons.io.IOUtils;
 
 public class RleParser {
@@ -21,13 +17,16 @@ public class RleParser {
 
         for (String part : parts) {
             String[] keyValue = part.trim().split("=");
-
-            if (keyValue.length == 2) {
-                if (keyValue[0].trim().equals("x")) {
-                    cols = Integer.parseInt(keyValue[1].trim());
-                } else if (keyValue[0].trim().equals("y")) {
-                    rows = Integer.parseInt(keyValue[1].trim());
+            try {
+                if (keyValue.length == 2) {
+                    if (keyValue[0].trim().equals("x")) {
+                        cols = Integer.parseInt(keyValue[1].trim());
+                    } else if (keyValue[0].trim().equals("y")) {
+                        rows = Integer.parseInt(keyValue[1].trim());
+                    }
                 }
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid header format: " + header);
             }
         }
     }
@@ -85,8 +84,7 @@ public class RleParser {
         return grid;
     }
 
-    public int[][] getGridFromClipboard() throws IOException, UnsupportedFlavorException {
-        String content = getFromClipboard();
+    public int[][] getGridFromClipboard(String content) {
         String[] lines = content.split("\n");
 
         for (String line : lines) {

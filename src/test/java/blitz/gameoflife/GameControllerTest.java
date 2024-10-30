@@ -1,0 +1,92 @@
+package blitz.gameoflife;
+
+import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.*;
+
+class GameControllerTest {
+
+    private static final String GLIDER_RLE = """
+                    #N 3c/10 pi wave
+                    #O Unknown
+                    #C https://conwaylife.com/wiki/3c/10_pi_wave
+                    #C https://conwaylife.com/patterns/3c10piwave.rle
+                    x = 45, y = 29, rule = B3/S23
+                    4bo17bo17bo$3bobo15bobo15bobo$3bobo15bobo15bobo$3bobo15bobo15bobo4$3bo
+                    bo15bobo15bobo2$2bo3bo13bo3bo13bo3bo$3b3o15b3o15b3o4$b2o3b2o11b2o3b2o
+                    11b2o3b2o$bo5bo11bo5bo11bo5bo$2b5o13b5o13b5o$2bobobo13bobobo13bobobo$b
+                    o5bo11bo5bo11bo5bo$bob3obo11bob3obo11bob3obo$bo5bo11bo5bo11bo5bo$4bo
+                    17bo17bo$4bo17bo17bo$4bo17bo17bo4$o7bo9bo7bo9bo7bo$o7bo9bo7bo9bo7bo!
+                    """.trim();
+    @Test
+    void toggleCellOn() {
+        // given
+        Grid model = mock();
+        GameComponent view = mock();
+        doReturn(10).when(view).getCellSize();
+        doReturn(100).when(model).getWidth();
+        doReturn(100).when(model).getHeight();
+
+        GameController controller = new GameController(model, view);
+
+        // when
+        controller.toggleCell(50, 100);
+
+        // then
+        verify(model).setCell(5, 10, 1);
+        verify(view).repaint();
+    }
+
+    @Test
+    void toggleCellOff() {
+        // given
+        Grid model = mock();
+        GameComponent view = mock();
+        GameController controller = new GameController(model, view);
+        doReturn(10).when(view).getCellSize();
+        doReturn(100).when(model).getWidth();
+        doReturn(100).when(model).getHeight();
+        doReturn(1).when(model).getCell(5, 10);
+
+        // when
+        controller.toggleCell(50, 100);
+
+        // then
+        verify(model).setCell(5, 10, 0);
+        verify(view).repaint();
+    }
+
+    @Test
+    void pasteRle() {
+        // given
+        Grid model = mock();
+        GameComponent view = mock();
+        RleParser reader = mock();
+        GameController controller = new GameController(model, view);
+
+        // when
+        controller.paste(GLIDER_RLE.replace("\n", "\r\n"));
+
+        // then
+        verify(reader).getGridFromClipboard(GLIDER_RLE);
+        verify(view).repaint();
+    }
+
+    @Test
+    void pasteUrl() {
+        // given
+        Grid model = mock();
+        GameComponent view = mock();
+        RleParser reader = mock();
+        GameController controller = new GameController(model, view);
+        String url = "https://conwaylife.com/patterns/glider.rle";
+
+
+        // when
+        controller.paste(url);
+
+        // then
+        verify(reader).getGridFromClipboard(url);
+        verify(view).repaint();
+    }
+
+}

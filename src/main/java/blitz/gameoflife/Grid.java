@@ -7,11 +7,27 @@ public class Grid {
     private int width;
     private int height;
     private int[][] field;
-    private static final int MIN_SIZE = 100;
+    private final int MIN_SIZE = 100;
 
 
     public Grid(int[][] initialField) {
         setField(initialField);
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getCell(int x, int y) {
+        return field[y][x];
+    }
+
+    public void setCell(int x, int y, int state) {
+        field[y][x] = state;
     }
 
     public void nextGen() {

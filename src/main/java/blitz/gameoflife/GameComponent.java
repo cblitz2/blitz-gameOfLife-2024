@@ -50,4 +50,9 @@ public class GameComponent extends JComponent {
         }
     }
 
+    public int getCellSize() {
+        int numCols = grid.getField()[0].length;
+        return Math.min(getWidth() / numCols, getHeight() / grid.getField().length);
+    }
+
 }
