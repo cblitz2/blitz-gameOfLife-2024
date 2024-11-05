@@ -6,6 +6,7 @@ public class GameController {
 
     private final Grid model;
     private final GameComponent view;
+
     private javax.swing.Timer timer;
 
     public GameController(Grid model, GameComponent view) {
@@ -32,7 +33,7 @@ public class GameController {
     public void paste(String input) {
         try {
             RleParser parser = new RleParser();
-            int [][] parsedGrid = parser.getGridFromClipboard(input);
+            int [][] parsedGrid = parser.getGrid(input);
             model.setField(parsedGrid);
             view.repaint();
         } catch (Exception ex) {

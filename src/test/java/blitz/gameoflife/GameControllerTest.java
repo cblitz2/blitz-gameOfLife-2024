@@ -69,7 +69,7 @@ class GameControllerTest {
         controller.paste(GLIDER_RLE.replace("\n", "\r\n"));
 
         // then
-        verify(reader).getGridFromClipboard(GLIDER_RLE);
+        verify(reader).decodeData(GLIDER_RLE);
         verify(view).repaint();
     }
 
@@ -82,12 +82,11 @@ class GameControllerTest {
         GameController controller = new GameController(model, view);
         String url = "https://conwaylife.com/patterns/glider.rle";
 
-
         // when
         controller.paste(url);
 
         // then
-        verify(reader).getGridFromClipboard(url);
+        verify(reader).getGrid(url);
         verify(view).repaint();
     }
 

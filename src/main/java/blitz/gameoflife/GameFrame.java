@@ -1,9 +1,19 @@
 
 package blitz.gameoflife;
 
+import org.apache.commons.io.IOUtils;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class GameFrame extends JFrame {
     private final GameController controller;
@@ -80,13 +90,34 @@ public class GameFrame extends JFrame {
 
         pasteButton.addActionListener(e -> {
             try {
-                RleParser parser = new RleParser();
-                String clipboardContent = parser.getFromClipboard();
-                controller.paste(clipboardContent);
+                String clipboardContent = Toolkit.getDefaultToolkit()
+                        .getSystemClipboard()
+                        .getData(DataFlavor.stringFlavor)
+                        .toString();
+                String content = getData(clipboardContent);
+                controller.paste(content);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Invalid clipboard content.");
+                ex.printStackTrace();
             }
         });
+    }
+
+    public String getData(String clipContent) throws IOException {
+        String content;
+        if (clipContent.startsWith("http")) {
+            URL url = new URL(clipContent);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setInstanceFollowRedirects(true);
+            content = IOUtils.toString(connection.getInputStream(), "UTF-8");
+        } else if (clipContent.contains("x") && clipContent.contains("y")) {
+            content = clipContent;
+        } else if (Files.exists(Paths.get(clipContent))) {
+            content = IOUtils.toString(new FileInputStream(new File(clipContent)), "UTF-8");
+        } else {
+            throw new IOException("Clipboard content is not valid RLE data, URL, or file path.");
+        }
+        return content;
     }
 
     private int[][] createEmptyGrid(int rows, int cols) {

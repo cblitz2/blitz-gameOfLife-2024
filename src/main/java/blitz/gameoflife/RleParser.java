@@ -1,12 +1,5 @@
 package blitz.gameoflife;
 
-import java.awt.*;
-import java.awt.datatransfer.*;
-import java.io.*;
-import java.net.*;
-import java.nio.file.*;
-import org.apache.commons.io.IOUtils;
-
 public class RleParser {
 
     private int rows;
@@ -31,41 +24,30 @@ public class RleParser {
         }
     }
 
-    public int[][] decodeData(String content) {
+    public int[][] decodeData(String dataContent) {
+        if (rows == 0 || cols == 0) {
+            throw new IllegalStateException("Grid dimensions are not set. Check header parsing.");
+        }
+
         int[][] grid = new int[rows][cols];
         int currentRow = 0;
         int currentCol = 0;
         int count = 0;
 
-        for (int i = 0; i < content.length(); i++) {
-            char c = content.charAt(i);
+        for (int i = 0; i < dataContent.length(); i++) {
+            char c = dataContent.charAt(i);
 
             if (Character.isDigit(c)) {
                 count = count * 10 + Character.getNumericValue(c);
-            } else if (c == 'b') {
-                if (count == 0) {
-                    count = 1;
-                }
+            } else if (c == 'b' || c == 'o') {
+                int value = (c == 'o') ? 1 : 0;
+                count = (count == 0) ? 1 : count;
+
                 for (int j = 0; j < count; j++) {
                     if (currentRow < rows && currentCol < cols) {
-                        grid[currentRow][currentCol] = 0;
+                        grid[currentRow][currentCol] = value;
                         currentCol++;
-                        if (currentCol >= cols) {
-                            currentRow++;
-                            currentCol = 0;
-                        }
-                    }
-                }
-                count = 0;
-            } else if (c == 'o') {
-                if (count == 0) {
-                    count = 1;
-                }
-                for (int j = 0; j < count; j++) {
-                    if (currentRow < rows && currentCol < cols) {
-                        grid[currentRow][currentCol] = 1;
-                        currentCol++;
-                        if (currentCol >= cols) {
+                        if (currentCol > cols) {
                             currentRow++;
                             currentCol = 0;
                         }
@@ -73,10 +55,9 @@ public class RleParser {
                 }
                 count = 0;
             } else if (c == '$') {
-                if (currentCol != 0) {
-                    currentRow++;
-                    currentCol = 0;
-                }
+                currentRow++;
+                currentCol = 0;
+                count = 0;
             } else if (c == '!') {
                 break;
             }
@@ -84,8 +65,9 @@ public class RleParser {
         return grid;
     }
 
-    public int[][] getGridFromClipboard(String content) {
+    public int[][] getGrid(String content) {
         String[] lines = content.split("\n");
+        StringBuilder dataContent = new StringBuilder();
 
         for (String line : lines) {
             line = line.trim();
@@ -94,29 +76,10 @@ public class RleParser {
             }
             if (line.startsWith("x")) {
                 parseHeader(line);
-                break;
+            } else {
+                dataContent.append(line);
             }
         }
-        return decodeData(content);
-    }
-
-    public String getFromClipboard() throws IOException, UnsupportedFlavorException {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        String clipContent = (String) clipboard.getData(DataFlavor.stringFlavor);
-        String content;
-
-        if (clipContent.startsWith("http")) {
-            URL url = new URL(clipContent);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setInstanceFollowRedirects(true);
-            content = IOUtils.toString(connection.getInputStream(), "UTF-8");
-        } else if (clipContent.contains("x") && clipContent.contains("y")) {
-            content = clipContent;
-        } else if (Files.exists(Paths.get(clipContent))) {
-            content = IOUtils.toString(new FileInputStream(new File(clipContent)), "UTF-8");
-        } else {
-            throw new IOException("Clipboard content is not valid RLE data, URL, or file path.");
-        }
-        return content;
+        return decodeData(dataContent.toString());
     }
 }
